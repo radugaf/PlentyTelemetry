@@ -6,7 +6,8 @@ import (
 	"io"
 	"net/http"
 
-	a "github.com/radugaf/PlentyTelemetry/adapters"
+	_ "github.com/radugaf/PlentyTelemetry/adapters"
+
 	c "github.com/radugaf/PlentyTelemetry/config"
 	d "github.com/radugaf/PlentyTelemetry/domain"
 	p "github.com/radugaf/PlentyTelemetry/ports"
@@ -34,15 +35,9 @@ func main() {
 			continue
 		}
 
-		switch driverCfg.Type {
-		case "cli":
-			writers = append(writers, a.NewCLIDriver())
-		case "json":
-			filename := driverCfg.Settings["filename"]
-			if filename == "" {
-				filename = "logs.json"
-			}
-			writers = append(writers, a.NewJSONDriver(filename))
+		writer := c.CreateDriver(driverCfg.Type, driverCfg.Settings)
+		if writer != nil {
+			writers = append(writers, writer)
 		}
 	}
 

@@ -9,6 +9,6 @@ drivers:
       filename: logs.jsonl
 
   - type: text
-    enabled: false
+    enabled: true
     settings:
       filename: logs.txt

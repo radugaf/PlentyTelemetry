@@ -2,25 +2,34 @@ package adapters
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	c "github.com/radugaf/PlentyTelemetry/config"
 	p "github.com/radugaf/PlentyTelemetry/ports"
 )
 
-type CLIDriver struct{}
+type TextDriver struct {
+	filename string
+}
 
 func init() {
-	c.RegisterDriver("cli", func(settings map[string]string) p.LogWriter {
-		return NewCLIDriver()
+	c.RegisterDriver("text", func(settings map[string]string) p.LogWriter {
+		return NewTextDriver(settings["filename"])
 	})
 }
 
-func NewCLIDriver() *CLIDriver {
-	return &CLIDriver{}
+func NewTextDriver(filename string) *TextDriver {
+	return &TextDriver{filename: filename}
 }
 
-func (d *CLIDriver) Write(logEntry p.LogEntry) {
+func (d *TextDriver) Write(logEntry p.LogEntry) {
+	file, err := os.OpenFile(d.filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
 	var output strings.Builder
 
 	fmt.Fprintf(&output, "[%s] %s: %s",
@@ -37,5 +46,5 @@ func (d *CLIDriver) Write(logEntry p.LogEntry) {
 		fmt.Fprintf(&output, " | TxID: %s", *logEntry.TransactionID)
 	}
 
-	fmt.Println(output.String())
+	fmt.Fprintln(file, output.String())
 }

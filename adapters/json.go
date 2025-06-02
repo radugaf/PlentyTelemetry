@@ -4,11 +4,22 @@ import (
 	"encoding/json"
 	"os"
 
+	c "github.com/radugaf/PlentyTelemetry/config"
 	p "github.com/radugaf/PlentyTelemetry/ports"
 )
 
 type JSONDriver struct {
 	filename string
+}
+
+func init() {
+	c.RegisterDriver("json", func(settings map[string]string) p.LogWriter {
+		filename := settings["filename"]
+		if filename == "" {
+			filename = "logs.json"
+		}
+		return NewJSONDriver(filename)
+	})
 }
 
 func NewJSONDriver(filename string) *JSONDriver {
