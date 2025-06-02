@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	a "github.com/radugaf/PlentyTelemetry/adapters"
+	c "github.com/radugaf/PlentyTelemetry/config"
 	d "github.com/radugaf/PlentyTelemetry/domain"
 	p "github.com/radugaf/PlentyTelemetry/ports"
 )
@@ -21,8 +22,25 @@ type Post struct {
 }
 
 func main() {
-	cliAdapter := a.NewCLIDriver()
-	logger = d.NewLogger(cliAdapter)
+	config, err := c.LoadConfig()
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		return
+	}
+
+	var writers []p.LogWriter
+	for _, driverCfg := range config.Drivers {
+		if !driverCfg.Enabled {
+			continue
+		}
+
+		switch driverCfg.Type {
+		case "cli":
+			writers = append(writers, a.NewCLIDriver())
+		}
+	}
+
+	logger = d.NewLogger(writers...)
 
 	logger.Info("Starting API tests", map[string]string{
 		"service": "api-tester",

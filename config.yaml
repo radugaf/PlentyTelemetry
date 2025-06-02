@@ -1,0 +1,14 @@
+drivers:
+  - type: cli
+    enabled: true
+    settings: {}
+
+  - type: json
+    enabled: false
+    settings:
+      filename: logs.json
+
+  - type: text
+    enabled: false
+    settings:
+      filename: logs.txt
