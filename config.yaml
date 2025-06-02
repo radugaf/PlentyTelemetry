@@ -4,9 +4,9 @@ drivers:
     settings: {}
 
   - type: json
-    enabled: false
+    enabled: true
     settings:
-      filename: logs.json
+      filename: logs.jsonl
 
   - type: text
     enabled: false

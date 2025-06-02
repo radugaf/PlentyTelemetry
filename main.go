@@ -37,6 +37,12 @@ func main() {
 		switch driverCfg.Type {
 		case "cli":
 			writers = append(writers, a.NewCLIDriver())
+		case "json":
+			filename := driverCfg.Settings["filename"]
+			if filename == "" {
+				filename = "logs.json"
+			}
+			writers = append(writers, a.NewJSONDriver(filename))
 		}
 	}
 
