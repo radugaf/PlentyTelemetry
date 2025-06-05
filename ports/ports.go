@@ -21,10 +21,10 @@ type LogEntry struct {
 
 type LoggingService interface {
 	Log(level LogLevel, msg string, tags map[string]string, txID ...string)
-	Info(msg string, tags map[string]string, txID ...string)
-	Debug(msg string, tags map[string]string, txID ...string)
-	Warning(msg string, tags map[string]string, txID ...string)
-	Error(msg string, tags map[string]string, txID ...string)
+	Info(msg string, args ...any)
+	Debug(msg string, args ...any)
+	Warning(msg string, args ...any)
+	Error(msg string, args ...any)
 	StartTransaction() string
 }
 
