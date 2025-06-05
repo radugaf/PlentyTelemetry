@@ -18,14 +18,14 @@ func init() {
 		filename := settings["filename"]
 		if filename == "" {
 			filename = "logs.jsonl" // default filename
-			fmt.Println("Using default filename: logs.json")
+			// fmt.Println("Using default filename: logs.json")
 		}
 		return NewJSONDriver(filename)
 	})
 }
 
 func NewJSONDriver(filename string) *JSONDriver {
-	fmt.Printf("Creating JSON driver with file: %s\n", filename)
+	// fmt.Printf("Creating JSON driver with file: %s\n", filename)
 	return &JSONDriver{filename: filename}
 }
 

@@ -13,10 +13,8 @@ type Logger struct {
 }
 
 func NewLogger(writers ...p.LogWriter) p.LoggingService {
-	fmt.Printf("Creating logger with %d writers\n", len(writers))
-	return &Logger{
-		writers: writers,
-	}
+	// fmt.Printf("Creating logger with %d writers\n", len(writers))
+	return &Logger{writers: writers}
 }
 
 func (l *Logger) Log(level p.LogLevel, msg string, tags map[string]string, txID ...string) {
@@ -33,8 +31,8 @@ func (l *Logger) Log(level p.LogLevel, msg string, tags map[string]string, txID 
 	}
 
 	// Write to all configured writers
-	for i, writer := range l.writers {
-		fmt.Printf("Logging to writer %d\n", i)
+	for _, writer := range l.writers {
+		// fmt.Printf("Logging to writer %d\n", i)
 		writer.Write(entry)
 	}
 }
@@ -67,11 +65,11 @@ func parseArgs(args ...any) (map[string]string, []string) {
 		switch v := arg.(type) {
 		case map[string]string:
 			tags = v
-			fmt.Printf("Found tags at position %d\n", i)
+			// fmt.Printf("Found tags at position %d\n", i)
 		case string:
 			if v != "" {
 				txID = []string{v}
-				fmt.Printf("Found txID at position %d: %s\n", i, v)
+				// fmt.Printf("Found txID at position %d: %s\n", i, v)
 			}
 		default:
 			fmt.Printf("Unknown argument type at position %d: %T\n", i, v)
@@ -88,6 +86,6 @@ func parseArgs(args ...any) (map[string]string, []string) {
 
 func (l *Logger) StartTransaction() string {
 	txID := uuid.New().String()
-	fmt.Printf("Started transaction: %s\n", txID)
+	// fmt.Printf("Started transaction: %s\n", txID)
 	return txID
 }

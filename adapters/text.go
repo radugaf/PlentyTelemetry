@@ -17,7 +17,8 @@ func init() {
 	c.RegisterDriver("text", func(settings map[string]string) p.LogWriter {
 		filename := settings["filename"]
 		if filename == "" {
-			fmt.Println("No filename specified for text driver")
+			filename = "logs.txt" // default filename
+			// fmt.Println("No filename specified for text driver")
 			return nil
 		}
 		return NewTextDriver(filename)
@@ -25,7 +26,7 @@ func init() {
 }
 
 func NewTextDriver(filename string) *TextDriver {
-	fmt.Printf("Creating text driver with file: %s\n", filename)
+	// fmt.Printf("Creating text driver with file: %s\n", filename)
 	return &TextDriver{filename: filename}
 }
 

@@ -5,6 +5,7 @@ go 1.24.1
 require (
 	github.com/google/uuid v1.6.0
 	github.com/spf13/viper v1.20.1
+	go.uber.org/mock v0.5.2
 )
 
 require (

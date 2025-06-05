@@ -1,5 +1,7 @@
 package ports
 
+//go:generate mockgen -source=ports.go -destination=../mocks/mock_ports.go -package=mocks
+
 import "time"
 
 type LogLevel string

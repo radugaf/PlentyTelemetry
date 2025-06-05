@@ -23,24 +23,22 @@ type DriverFactory func(settings map[string]string) p.LogWriter
 var driverRegistry = make(map[string]DriverFactory)
 
 func RegisterDriver(name string, factory DriverFactory) {
-	fmt.Printf("Registering driver: %s\n", name)
+	// fmt.Printf("Registering driver: %s\n", name)
 	driverRegistry[name] = factory
 }
 
 func CreateDriver(driverType string, settings map[string]string) p.LogWriter {
-	fmt.Printf("Creating driver of type: %s\n", driverType)
+	// fmt.Printf("Creating driver of type: %s\n", driverType)
 
 	if factory, exists := driverRegistry[driverType]; exists {
 		writer := factory(settings)
-		if writer != nil {
+		if writer == nil {
 			fmt.Printf("Successfully created %s driver\n", driverType)
-		} else {
-			fmt.Printf("Failed to create %s driver\n", driverType)
 		}
 		return writer
 	}
 
-	fmt.Printf("Unknown driver type: %s\n", driverType)
+	// fmt.Printf("Unknown driver type: %s\n", driverType)
 	return nil
 }
 
@@ -70,6 +68,6 @@ func LoadConfig() (*Config, error) {
 		return nil, fmt.Errorf("error unmarshalling config: %w", err)
 	}
 
-	fmt.Printf("Loaded %d driver configurations\n", len(config.Drivers))
+	// fmt.Printf("Loaded %d driver configurations\n", len(config.Drivers))
 	return &config, nil
 }
